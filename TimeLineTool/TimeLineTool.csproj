@@ -49,6 +49,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="FunctionDataType.cs" />
     <Compile Include="TimeLineControl.cs" />
+    <Compile Include="TimeLineControlFunctionSettingMenu.cs" />
     <Compile Include="TimeLineFunctionControl.cs" />
     <Compile Include="TimeLinePositionIndicator.cs" />
   </ItemGroup>

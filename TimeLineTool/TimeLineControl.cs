@@ -14,6 +14,7 @@ using System.Windows.Controls.Primitives;
 using System.Collections.Specialized;
 using System.Windows.Threading;
 using System.Diagnostics;
+using System.Windows.Media.Animation;
 
 namespace TimeLineTool
 {
@@ -123,6 +124,7 @@ namespace TimeLineTool
    public class TimeLineControl : Canvas
    {
       public event EventHandler<FunctionTriggerEventArgs> OnTimerTick;
+      public Panel HostCanvas;
 
       public static TimeSpan CalculateMinimumAllowedTimeSpan(double unitSize)
       {
@@ -911,7 +913,36 @@ namespace TimeLineTool
          timeLineFunctionCtrl.PreviewMouseLeftButtonDown += item_PreviewDragButtonDown;
          timeLineFunctionCtrl.UnitSize = UnitSize;
 
+         timeLineFunctionCtrl.MouseDoubleClick += TimeLineFunctionCtrl_MouseDoubleClick;
+
          return timeLineFunctionCtrl;
+      }
+
+      /// <summary>
+      /// Mouse Double Click handling event.
+      /// </summary>
+      /// <param name="sender"></param>
+      /// <param name="e"></param>
+      private void TimeLineFunctionCtrl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+      {
+         if (HostCanvas != null)
+         {
+            TimeLineControlFunctionSettingMenu settingMenuControl = new TimeLineControlFunctionSettingMenu();
+
+            settingMenuControl.Style = (Style)FindResource("TimeLineFunctionControlSettingMenuStyle");
+            settingMenuControl.Closed += SettingMenuControl_Closed;
+
+            /* Set the position to the location of the mouse click event */
+            Canvas.SetLeft(settingMenuControl, e.GetPosition((HostCanvas as IInputElement)).X);
+            Canvas.SetTop(settingMenuControl, e.GetPosition((HostCanvas as IInputElement)).Y);
+
+            HostCanvas.Children.Add(settingMenuControl);
+         }
+      }
+
+      private void SettingMenuControl_Closed(object sender, EventArgs e)
+      {
+         HostCanvas.Children.Remove((sender as UIElement));
       }
       #endregion
 

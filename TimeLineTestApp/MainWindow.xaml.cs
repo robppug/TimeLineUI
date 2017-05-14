@@ -35,7 +35,7 @@ namespace TimeLineTestApp
 		{
 			InitializeComponent();
 
-			var tmp1 = new FunctionDataType()
+         var tmp1 = new FunctionDataType()
 			{
 				StartTime = TimeSpan.FromMilliseconds(0),
 				EndTime = TimeSpan.FromMilliseconds(200),
@@ -137,6 +137,7 @@ namespace TimeLineTestApp
       {
          TimeLineControl tlc = new TimeLineControl()
          {
+            HostCanvas = this.MainCanvas,
             StartTime = TimeSpan.Zero,
             Height = 80,
             FunctionTemplate = (DataTemplate)FindResource("TimeLineFunctionDataTemplate"),

@@ -7,6 +7,7 @@
         Title="MainWindow"
         Height="700"
         Width="1024">
+   
    <Window.Resources>
       <!-- Static Resource = BgColor -->
       <Color R="255" G="255" B="255" A="180" x:Key="BgColor" />
@@ -55,6 +56,50 @@
          </Setter>
       </Style>
 
+      <!-- Style = TimeLineFunctionControlSettingMenuStyle -->
+      <Style TargetType="{x:Type tt:TimeLineControlFunctionSettingMenu}"
+             x:Key="TimeLineFunctionControlSettingMenuStyle">
+         <Setter Property="Template">
+            <Setter.Value>
+               <ControlTemplate TargetType="{x:Type tt:TimeLineControlFunctionSettingMenu}">
+                  <Border x:Name="ParentControl"
+                          BorderThickness="1"
+                          BorderBrush="Black" 
+                          CornerRadius="2" 
+                          HorizontalAlignment="Stretch"
+                          VerticalAlignment="Stretch"
+                          Background="LightGray"
+                          Width="200"
+                          MaxHeight="150">
+                     <!--Animate the apperance of the MENU-->
+                     <Border.Triggers>
+                        <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+                           <EventTrigger.Actions>
+                              <BeginStoryboard>
+                                 <Storyboard Duration="00:00:00.3">
+                                    <DoubleAnimation From="0" To="1" Duration="00:00:00.3" Storyboard.TargetName="ParentControl" Storyboard.TargetProperty="Opacity"/>
+                                 </Storyboard>
+                              </BeginStoryboard>
+                           </EventTrigger.Actions>
+                        </EventTrigger>
+                     </Border.Triggers>
+                     <!--Contents of the MENU-->
+                     <StackPanel HorizontalAlignment="Stretch"
+                                 VerticalAlignment="Stretch" >
+                        <Button x:Name="settingMenuCloseButton" HorizontalAlignment="Right" Width="15" Height="15" Content="X" FontSize="6" VerticalAlignment="Top"/>
+                        <TextBlock Text="Function" FontWeight="Bold"/>
+                        <TextBox HorizontalAlignment="Stretch" Text="{Binding Path=Function}" MaxWidth="{Binding Width, ElementName=ParentControl}"/>
+                        <TextBlock Text="Start Time" FontWeight="Bold"/>
+                        <TextBox HorizontalAlignment="Stretch" Text="{Binding Path=StartTime, StringFormat={}{0} ms}" MaxWidth="{Binding Width, ElementName=ParentControl}"/>
+                        <TextBlock Text="End Time" FontWeight="Bold"/>
+                        <TextBox HorizontalAlignment="Stretch" Text="{Binding Path=EndTime, StringFormat={}{0} ms}" MaxWidth="{Binding Width, ElementName=ParentControl}"/>
+                     </StackPanel>
+                  </Border>
+               </ControlTemplate>
+            </Setter.Value>
+         </Setter>
+      </Style>
+
       <!-- DataTemplate = FunctionDataType -->
       <DataTemplate  DataType="{x:Type tt:FunctionDataType}">
          <Border BorderThickness="1"
@@ -97,14 +142,16 @@
       </DataTemplate>
    </Window.Resources>
 
-   <StackPanel VerticalAlignment="Stretch"
-               Orientation="Vertical">
+   <Canvas VerticalAlignment="Stretch"
+           HorizontalAlignment="Stretch"
+           x:Name="MainCanvas">
       <GroupBox Header="Timelines">
          <StackPanel Orientation="Vertical">
             <Button x:Name="buttonTrigger" Content="Trigger" Margin="2,2,2,2" Width="150" HorizontalAlignment="Left" Click="buttonTrigger_Click"/>
             <Button x:Name="buttonAddTimeLineControl" Content="Add New TimeLine" Margin="2,2,2,2" Width="150" HorizontalAlignment="Left" Click="buttonAddNewTimeLine_Click"/>
             <ListBox x:Name="listBoxViewLevel" HorizontalAlignment="Left" Height="20" Width="286" PreviewMouseLeftButtonDown="listBoxViewLevel_PreviewMouseLeftButtonDown" />
             <TextBlock Text="Right click and drag to edit items.  Left Edge - moves start time.  Right Edge - moves end time." />
+            <TextBlock Text="Double Right click on an item will open the setting menu." />
             <TextBlock Text="If you are moving the scene you will push other scenes when you run into them." />
             <TextBlock Text="If you are editing an edge, it will stop when you run into a neighbor scene.  Hold ctrl to link to a touching edge and move them together." />
             <TextBlock Text="You can drag and drop with left click to change order or move from one timeline to the next." />
@@ -178,6 +225,6 @@
 
          </StackPanel>
       </GroupBox>
-   </StackPanel>
+   </Canvas>
 </Window>
 
